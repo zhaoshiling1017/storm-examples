@@ -35,6 +35,7 @@ public class WordCountBolt extends BaseRichBolt{
         count++;
         this.counts.put(word, count);
         this.collector.emit(new Values(word, count));
+        this.collector.ack(tuple);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

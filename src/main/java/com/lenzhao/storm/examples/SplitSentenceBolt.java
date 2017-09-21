@@ -33,6 +33,7 @@ public class SplitSentenceBolt extends BaseRichBolt{
         for (String word : words) {
             this.collector.emit(new Values(word));
         }
+        this.collector.ack(tuple);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
