@@ -10,10 +10,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class ReportBolt extends BaseRichBolt {
 
+    private static final Log LOG = LogFactory.getLog(ReportBolt.class);
     private HashMap<String, Long> counts = null;
+
 
     public void prepare(Map config, TopologyContext context, OutputCollector collector) {
         this.counts = new HashMap<String, Long>();
@@ -22,6 +26,7 @@ public class ReportBolt extends BaseRichBolt {
     public void execute(Tuple tuple) {
         String word = tuple.getStringByField("word");
         Long count = tuple.getLongByField("count");
+        LOG.info("word===" + word + "===count===" + count);
         this.counts.put(word, count);
     }
 
@@ -31,13 +36,13 @@ public class ReportBolt extends BaseRichBolt {
 
     @Override
     public void cleanup() {
-        System.out.println("--- FINAL COUNTS ---");
+        LOG.info("--- FINAL COUNTS ---");
         List<String> keys = new ArrayList<String>();
         keys.addAll(this.counts.keySet());
         Collections.sort(keys);
         for (String key : keys) {
-            System.out.println(key + " : " + this.counts.get(key));
+            LOG.info(key + " : " + this.counts.get(key));
         }
-        System.out.println("--------------");
+        LOG.info("---------------");
     }
 }

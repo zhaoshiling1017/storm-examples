@@ -1,4 +1,4 @@
-package com.lenzhao.storm.examples;
+package com.lenzhao.storm.test;
 
 /**
  * Created by lenzhao on 17-9-19.
@@ -114,7 +114,7 @@ public class MyKafkaTopology {
         String zkRoot = "/storm"; // default zookeeper root configuration for storm
         String id = "word";
 
-        BrokerHosts brokerHosts = new ZkHosts(zks);
+        BrokerHosts brokerHosts = new ZkHosts(zks, "/kafka/brokers");
         SpoutConfig spoutConf = new SpoutConfig(brokerHosts, topic, zkRoot, id);
         spoutConf.scheme = new SchemeAsMultiScheme(new StringScheme());
         spoutConf.forceFromStart = false;
@@ -135,7 +135,7 @@ public class MyKafkaTopology {
             conf.setNumWorkers(3);
             StormSubmitter.submitTopologyWithProgressBar(name, conf, builder.createTopology());
         } else {
-            conf.setMaxTaskParallelism(3);
+            //conf.setMaxTaskParallelism(3);
             LocalCluster cluster = new LocalCluster();
             cluster.submitTopology(name, conf, builder.createTopology());
             Thread.sleep(60000);

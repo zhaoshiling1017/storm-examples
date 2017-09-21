@@ -7,10 +7,15 @@ import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class WordCountBolt extends BaseRichBolt{
+
+    private static final Log LOG = LogFactory.getLog(WordCountBolt.class);
     private OutputCollector collector;
     private HashMap<String, Long> counts = null;
 
@@ -22,6 +27,7 @@ public class WordCountBolt extends BaseRichBolt{
 
     public void execute(Tuple tuple) {
         String word = tuple.getStringByField("word");
+        LOG.info("=====word====" + word);
         Long count = this.counts.get(word);
         if(count == null){
             count = 0L;
